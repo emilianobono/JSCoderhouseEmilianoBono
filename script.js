@@ -1,128 +1,126 @@
-const productList = [
-    {
-        name: 'Kitty Flip-flops',
-        number: '1',
-        price: 10,
-        color: 'purple',
-        stock: 3,
-        brand: 'Kitty Girl'
-    },
-    {
-        name: 'Cat Hat',
-        number: '2',
-        price: 5,
-        color: 'black',
-        stock: 1,
-        brand: 'Catwoman'
-    },
-    {
-        name: 'Kitty Pijamas',
-        number: '3',
-        price: 13,
-        color: 'pink',
-        stock: 3,
-        brand: 'Kitty Girl'
-    },
-    {
-        name: 'Kitty Sneakers',
-        number: '4',
-        price: 16,
-        color: 'white',
-        stock: 3,
-        brand: 'Kitty Girl'
-    },
-    {
-        name: 'Kitty Backpack',
-        number: '5',
-        price: 16,
-        color: 'purple',
-        stock: 1,
-        brand: 'Catwoman'
-    },
-    {
-        name: 'Kitty Suitcase',
-        number: '6',
-        price: 20,
-        color: 'black',
-        stock: 1,
-        brand: 'Catwoman'
-    }
-]
+const addToShoppingCartButtons = document.querySelectorAll('.addToCart');
+addToShoppingCartButtons.forEach((addToCartButton) => {
+    addToCartButton.addEventListener('click', addToCartClicked);
+});
 
-class Product {
-    constructor(name, number, price, color, stock, brand){
-        this.name = name;
-        this.number = number;
-        this.price = price;
-        this.color = color;
-        this.stock = stock;
-        this.brand = brand;
-    }
+const comprarButton = document.querySelector('.comprarButton');
+comprarButton.addEventListener('click', comprarButtonClicked);
 
-    dataInput(){
-        return `N°: ${this.number} > ${this.name} $${this.price}`;
-    }
-    notification(){
-        return `${this.name} the price is ${this.price}`
-    }
+const shoppingCartItemsContainer = document.querySelector(
+    '.shoppingCartItemsContainer'
+);
+
+function addToCartClicked(event) {
+    const button = event.target;
+    const item = button.closest('.item');
+
+    const itemTitle = item.querySelector('.item-title').textContent;
+    const itemPrice = item.querySelector('.item-price').textContent;
+    const itemImage = item.querySelector('.item-image').src;
+
+    addItemToShoppingCart(itemTitle, itemPrice, itemImage);
 }
 
-const shoppingKart = []
+function addItemToShoppingCart(itemTitle, itemPrice, itemImage) {
+    const elementsTitle = shoppingCartItemsContainer.getElementsByClassName(
+    'shoppingCartItemTitle'
+    );
+    for (let i = 0; i < elementsTitle.length; i++) {
+    if (elementsTitle[i].innerText === itemTitle) {
+        let elementQuantity = elementsTitle[
+        i
+        ].parentElement.parentElement.parentElement.querySelector(
+        '.shoppingCartItemQuantity'
+        );
+        elementQuantity.value++;
+        $('.toast').toast('show');
+        updateShoppingCartTotal();
+        return;
+        }
+    }
 
-// Funciones
-const productDataInput = (arrayProducts) => {
-    return arrayProducts.map( (element)=> element.dataInput()).join('\n')
+    const shoppingCartRow = document.createElement('div');
+    const shoppingCartContent = `
+    <div class="row shoppingCartItem">
+        <div class="col-6">
+            <div class="shopping-cart-item d-flex align-items-center h-100 border-bottom pb-2 pt-3">
+                <img src=${itemImage} class="shopping-cart-image">
+                <h6 class="shopping-cart-item-title shoppingCartItemTitle text-truncate ml-3 mb-0">${itemTitle}</h6>
+            </div>
+        </div>
+        <div class="col-2">
+            <div class="shopping-cart-price d-flex align-items-center h-100 border-bottom pb-2 pt-3">
+                <p class="item-price mb-0 shoppingCartItemPrice">${itemPrice}</p>
+            </div>
+        </div>
+        <div class="col-4">
+            <div
+                class="shopping-cart-quantity d-flex justify-content-between align-items-center h-100 border-bottom pb-2 pt-3">
+                <input class="shopping-cart-quantity-input shoppingCartItemQuantity" type="number"
+                    value="1">
+                <button class="btn btn-danger buttonDelete" type="button">X</button>
+            </div>
+        </div>
+    </div>`;
+    shoppingCartRow.innerHTML = shoppingCartContent;
+    shoppingCartItemsContainer.append(shoppingCartRow);
+
+    shoppingCartRow
+    .querySelector('.buttonDelete')
+    .addEventListener('click', removeShoppingCartItem);
+
+    shoppingCartRow
+    .querySelector('.shoppingCartItemQuantity')
+    .addEventListener('change', quantityChanged);
+
+    updateShoppingCartTotal();
 }
 
-const addToShoppingKartByNumber = (products) => {
-    const productData = productDataInput(products);
-    const number = prompt('Select the product number you want to buy:\n' + productData + '\n' + 'To exit, enter 0 or press Enter.' );
-    const product = products.find((product) => product.number === number);
-    if (!product) return;
-    shoppingKart.push(product);
-    alert('You have added the product to the Shopping Kart!')
-}
-
-const showShoppingKart = (shoppingKartProducts) => {
-    shoppingKartProducts.forEach((product) => {
-        console.log(product.notification());
-    });
-}
-const getTotal = (arrayProducts) => {
+function updateShoppingCartTotal() {
     let total = 0;
-    arrayProducts.forEach((product) => {
-        total += product.price;
+    const shoppingCartTotal = document.querySelector('.shoppingCartTotal');
+
+    const shoppingCartItems = document.querySelectorAll('.shoppingCartItem');
+
+    shoppingCartItems.forEach((shoppingCartItem) => {
+    const shoppingCartItemPriceElement = shoppingCartItem.querySelector(
+        '.shoppingCartItemPrice'
+    );
+    const shoppingCartItemPrice = Number(
+        shoppingCartItemPriceElement.textContent.replace('$', '')
+    );
+    const shoppingCartItemQuantityElement = shoppingCartItem.querySelector(
+        '.shoppingCartItemQuantity'
+    );
+    const shoppingCartItemQuantity = Number(
+        shoppingCartItemQuantityElement.value
+    );
+    total = total + shoppingCartItemPrice * shoppingCartItemQuantity;
     });
-    return total;
+    shoppingCartTotal.innerHTML = `${total.toFixed(2)}$`;
 }
 
-const products = productList.map(product => new Product(
-    product.name,
-    product.number,
-    product.price,
-    product.color,
-    product.stock,
-    product.brand
-));
-
-// addToShoppingKartByNumber(products)
-
-
-// alert('You have to pay $' + getTotal(shoppingKart))
-// showShoppingKart(shoppingKart);
-// console.log(getTotal(shoppingKart));
-
-// let adding = document.getElementsByClassName("btn");
-// adding.addEventListener("click", addItem)
-// function addItem() {
-//     console.log("You have added the item to the shopping kart")
-// }
-
-const addToKart = document.getElementById("b1");
-addToKart.addEventListener("click", addToShoppingKartByNumber)
-function addToShoppingKartByNumber(products){
-    console.log("You have added the item to the shopping kart")
+function removeShoppingCartItem(event) {
+    const buttonClicked = event.target;
+    buttonClicked.closest('.shoppingCartItem').remove();
+    updateShoppingCartTotal();
 }
+
+function quantityChanged(event) {
+    const input = event.target;
+    input.value <= 0 ? (input.value = 1) : null;
+    updateShoppingCartTotal();
+}
+
+
+if (localStorage.getItem("shoppingCartItemsContainer")) {
+    shoppingCartItemsContainer = JSON.parse(localStorage.getItem('shoppingCartItemsContainer'))
+} else {
+    localStorage.setItem('shoppingCartItemsContainer', JSON.stringify(shoppingCartItemsContainer))
+}
+
+
+// Form
 
 class User{
     constructor(username, email, password) {
@@ -139,7 +137,7 @@ const totalDiv = document.getElementById("totalDiv")
 totalButton.addEventListener("click", () =>{
     divUsers.innerHTML += `
         <div class="totalP" id="user${indice}" style="width: 18rem;margin:3px;">
-            <p>${getTotal(shoppingKart)}</p>
+            <p>${getTotal(shoppingCart)}</p>
         </div>
     `
 })
@@ -159,3 +157,9 @@ formId.addEventListener("submit", (event) => {
 
     console.log(users)
 })
+
+if (localStorage.getItem("users")) {
+    users = JSON.parse(localStorage.getItem('users'))
+} else {
+    localStorage.setItem('users', JSON.stringify(users))
+}
