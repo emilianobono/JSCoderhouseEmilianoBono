@@ -1,47 +1,77 @@
 const addToShoppingCartButtons = document.querySelectorAll('.addToCart');
 addToShoppingCartButtons.forEach((addToCartButton) => {
-    addToCartButton.addEventListener('click', addToCartClicked);
+addToCartButton.addEventListener('click', addToCartClicked);
 });
+
+const addToShoppingCartButton = document.querySelectorAll('.adding');
+addToShoppingCartButtons.forEach((addToCartButton) => {
+addToCartButton.addEventListener('click', () => {
+    Swal.fire({
+    position: 'top-end',
+    icon: 'success',
+    html: 
+        '<p>Successfully added</p>',
+    showConfirmButton: false,
+    timer: 2000
+    })
+});
+});
+
+// No me funciona al presionar el botón para quitar del carrito
+
+// const deletebutton = document.querySelectorAll('.delete');
+// deletebutton.forEach((deletion) => {
+//   deletion.addEventListener('click', () => {
+//     Swal.fire({
+//       position: 'top-end',
+//       icon: 'success',
+//       html: 
+//         '<p>Successfully removed</p>',
+//       showConfirmButton: false,
+//       timer: 2000
+//     })
+//   });
+// });
 
 const comprarButton = document.querySelector('.comprarButton');
 comprarButton.addEventListener('click', comprarButtonClicked);
 
 const shoppingCartItemsContainer = document.querySelector(
-    '.shoppingCartItemsContainer'
+'.shoppingCartItemsContainer'
 );
 
 function addToCartClicked(event) {
-    const button = event.target;
-    const item = button.closest('.item');
+const button = event.target;
+const item = button.closest('.item');
 
-    const itemTitle = item.querySelector('.item-title').textContent;
-    const itemPrice = item.querySelector('.item-price').textContent;
-    const itemImage = item.querySelector('.item-image').src;
+const itemTitle = item.querySelector('.item-title').textContent;
+const itemPrice = item.querySelector('.item-price').textContent;
+const itemImage = item.querySelector('.item-image').src;
 
-    addItemToShoppingCart(itemTitle, itemPrice, itemImage);
+addItemToShoppingCart(itemTitle, itemPrice, itemImage);
 }
 
 function addItemToShoppingCart(itemTitle, itemPrice, itemImage) {
-    const elementsTitle = shoppingCartItemsContainer.getElementsByClassName(
+const elementsTitle = shoppingCartItemsContainer.getElementsByClassName(
     'shoppingCartItemTitle'
-    );
-    for (let i = 0; i < elementsTitle.length; i++) {
+);
+for (let i = 0; i < elementsTitle.length; i++) {
     if (elementsTitle[i].innerText === itemTitle) {
-        let elementQuantity = elementsTitle[
+    let elementQuantity = elementsTitle[
         i
-        ].parentElement.parentElement.parentElement.querySelector(
+    ].parentElement.parentElement.parentElement.querySelector(
         '.shoppingCartItemQuantity'
-        );
-        elementQuantity.value++;
-        $('.toast').toast('show');
-        updateShoppingCartTotal();
-        return;
-        }
+    );
+    elementQuantity.value++;
+    $('.toast').toast('show');
+    updateShoppingCartTotal();
+    return;
     }
+}
 
-    const shoppingCartRow = document.createElement('div');
-    const shoppingCartContent = `
-    <div class="row shoppingCartItem">
+const shoppingCartRow = document.createElement('div');
+const shoppingCartContent = `
+<div class="row shoppingCartItem">
         <div class="col-6">
             <div class="shopping-cart-item d-flex align-items-center h-100 border-bottom pb-2 pt-3">
                 <img src=${itemImage} class="shopping-cart-image">
@@ -58,46 +88,46 @@ function addItemToShoppingCart(itemTitle, itemPrice, itemImage) {
                 class="shopping-cart-quantity d-flex justify-content-between align-items-center h-100 border-bottom pb-2 pt-3">
                 <input class="shopping-cart-quantity-input shoppingCartItemQuantity" type="number"
                     value="1">
-                <button class="btn btn-danger buttonDelete" type="button">X</button>
+                <button class="btn btn-danger buttonDelete delete" type="button">X</button>
             </div>
         </div>
     </div>`;
-    shoppingCartRow.innerHTML = shoppingCartContent;
-    shoppingCartItemsContainer.append(shoppingCartRow);
+shoppingCartRow.innerHTML = shoppingCartContent;
+shoppingCartItemsContainer.append(shoppingCartRow);
 
-    shoppingCartRow
+shoppingCartRow
     .querySelector('.buttonDelete')
     .addEventListener('click', removeShoppingCartItem);
 
-    shoppingCartRow
+shoppingCartRow
     .querySelector('.shoppingCartItemQuantity')
     .addEventListener('change', quantityChanged);
 
-    updateShoppingCartTotal();
+updateShoppingCartTotal();
 }
 
 function updateShoppingCartTotal() {
-    let total = 0;
-    const shoppingCartTotal = document.querySelector('.shoppingCartTotal');
+let total = 0;
+const shoppingCartTotal = document.querySelector('.shoppingCartTotal');
 
-    const shoppingCartItems = document.querySelectorAll('.shoppingCartItem');
+const shoppingCartItems = document.querySelectorAll('.shoppingCartItem');
 
-    shoppingCartItems.forEach((shoppingCartItem) => {
+shoppingCartItems.forEach((shoppingCartItem) => {
     const shoppingCartItemPriceElement = shoppingCartItem.querySelector(
-        '.shoppingCartItemPrice'
+    '.shoppingCartItemPrice'
     );
     const shoppingCartItemPrice = Number(
-        shoppingCartItemPriceElement.textContent.replace('$', '')
+    shoppingCartItemPriceElement.textContent.replace('€', '')
     );
     const shoppingCartItemQuantityElement = shoppingCartItem.querySelector(
-        '.shoppingCartItemQuantity'
+    '.shoppingCartItemQuantity'
     );
     const shoppingCartItemQuantity = Number(
-        shoppingCartItemQuantityElement.value
+    shoppingCartItemQuantityElement.value
     );
     total = total + shoppingCartItemPrice * shoppingCartItemQuantity;
     });
-    shoppingCartTotal.innerHTML = `${total.toFixed(2)}$`;
+    shoppingCartTotal.innerHTML = `${total.toFixed(2)}€`;
 }
 
 function removeShoppingCartItem(event) {
@@ -112,11 +142,9 @@ function quantityChanged(event) {
     updateShoppingCartTotal();
 }
 
-
-if (localStorage.getItem("shoppingCartItemsContainer")) {
-    shoppingCartItemsContainer = JSON.parse(localStorage.getItem('shoppingCartItemsContainer'))
-} else {
-    localStorage.setItem('shoppingCartItemsContainer', JSON.stringify(shoppingCartItemsContainer))
+function comprarButtonClicked() {
+    shoppingCartItemsContainer.innerHTML = '';
+    updateShoppingCartTotal();
 }
 
 
@@ -124,10 +152,10 @@ if (localStorage.getItem("shoppingCartItemsContainer")) {
 
 class User{
     constructor(username, email, password) {
-        this.username = username
-        this.email = email
-        this.password = password
-    }
+    this.username = username
+    this.email = email
+    this.password = password
+}
 }
 const users = []
 
@@ -136,10 +164,10 @@ const totalDiv = document.getElementById("totalDiv")
 
 totalButton.addEventListener("click", () =>{
     divUsers.innerHTML += `
-        <div class="totalP" id="user${indice}" style="width: 18rem;margin:3px;">
-            <p>${getTotal(shoppingCart)}</p>
-        </div>
-    `
+    <div class="totalP" id="user${indice}" style="width: 18rem;margin:3px;">
+        <p>${getTotal(shoppingCart)}</p>
+    </div>
+`
 })
 
 const formId = document.getElementById("formId")
