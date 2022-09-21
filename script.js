@@ -17,22 +17,6 @@ addToCartButton.addEventListener('click', () => {
 });
 });
 
-// No me funciona al presionar el botón para quitar del carrito
-
-// const deletebutton = document.querySelectorAll('.delete');
-// deletebutton.forEach((deletion) => {
-//   deletion.addEventListener('click', () => {
-//     Swal.fire({
-//       position: 'top-end',
-//       icon: 'success',
-//       html: 
-//         '<p>Successfully removed</p>',
-//       showConfirmButton: false,
-//       timer: 2000
-//     })
-//   });
-// });
-
 const comprarButton = document.querySelector('.comprarButton');
 comprarButton.addEventListener('click', comprarButtonClicked);
 
@@ -103,8 +87,21 @@ shoppingCartRow
     .querySelector('.shoppingCartItemQuantity')
     .addEventListener('change', quantityChanged);
 
+const totalButton = document.getElementById("totalButton")
+const totalDiv = document.getElementById("totalDiv")
+
+totalButton.addEventListener("click", () =>{
+    divUsers.innerHTML += `
+    <div class="totalP" id="user${indice}" style="width: 18rem;margin:3px;">
+        <p>${getTotal(shoppingCart)}</p>
+    </div>
+`
+})
+
 updateShoppingCartTotal();
 }
+
+// Funciones
 
 function updateShoppingCartTotal() {
 let total = 0;
@@ -117,7 +114,7 @@ shoppingCartItems.forEach((shoppingCartItem) => {
     '.shoppingCartItemPrice'
     );
     const shoppingCartItemPrice = Number(
-    shoppingCartItemPriceElement.textContent.replace('€', '')
+    shoppingCartItemPriceElement.textContent.replace('$', '')
     );
     const shoppingCartItemQuantityElement = shoppingCartItem.querySelector(
     '.shoppingCartItemQuantity'
@@ -127,7 +124,7 @@ shoppingCartItems.forEach((shoppingCartItem) => {
     );
     total = total + shoppingCartItemPrice * shoppingCartItemQuantity;
     });
-    shoppingCartTotal.innerHTML = `${total.toFixed(2)}€`;
+    shoppingCartTotal.innerHTML = ` ${total.toFixed(2)} $`;
 }
 
 function removeShoppingCartItem(event) {
@@ -158,17 +155,6 @@ class User{
 }
 }
 const users = []
-
-const totalButton = document.getElementById("totalButton")
-const totalDiv = document.getElementById("totalDiv")
-
-totalButton.addEventListener("click", () =>{
-    divUsers.innerHTML += `
-    <div class="totalP" id="user${indice}" style="width: 18rem;margin:3px;">
-        <p>${getTotal(shoppingCart)}</p>
-    </div>
-`
-})
 
 const formId = document.getElementById("formId")
 

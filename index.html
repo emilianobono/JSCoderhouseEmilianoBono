@@ -28,11 +28,10 @@
         <div class="container">
             <div class="items">
                 <div class="row">
-
                     <div class="col-12 col-md-6">
                         <div class="item shadow mb-4">
                             <h3 class="item-title">Kitty Flip-flops</h3>
-                            <img class="item-image" src="./img/descarga.png">
+                            <img class="item-image" src="./img/kittyflipflops.jpg">
 
                             <div class="item-details">
                                 <h4 class="item-price">$10</h4>
@@ -44,7 +43,7 @@
                         <div class="item shadow mb-4">
                             <h3 class="item-title">Cat Hat</h3>
     
-                            <img class="item-image" src="./img/descarga.png">
+                            <img class="item-image" src="./img/kittyhat.jpg">
     
                             <div class="item-details">
                                 <h4 class="item-price">$5</h4>
@@ -59,7 +58,7 @@
                         <div class="item shadow mb-4">
                             <h3 class="item-title">Kitty Pijamas</h3>
     
-                            <img class="item-image" src="./img/descarga.png">
+                            <img class="item-image" src="./img/kittypijamas.jpg">
     
                             <div class="item-details">
                                 <h4 class="item-price">$13</h4>
@@ -71,7 +70,7 @@
                         <div class="item shadow mb-4">
                             <h3 class="item-title">Kitty Sneakers</h3>
     
-                            <img class="item-image" src="./img/descarga.png">
+                            <img class="item-image" src="./img/kittysneakers.webp">
     
                             <div class="item-details">
                                 <h4 class="item-price">$16</h4>
@@ -79,13 +78,13 @@
                             </div>
                         </div>
                     </div>
-                </div>
+
                 <div class="row">
                     <div class="col-12 col-md-6">
                         <div class="item shadow mb-4">
                             <h3 class="item-title">Kitty Backpack</h3>
     
-                            <img class="item-image" src="./img/descarga.png">
+                            <img class="item-image" src="./img/kittybackpack.jpg">
                             <div class="item-details">
                                 <h4 class="item-price">$16</h4>
                                 <button class="item-button btn btn-primary addToCart adding">Add to Cart</button>
@@ -96,7 +95,7 @@
                         <div class="item shadow mb-4">
                             <h3 class="item-title">Kitty Suitcase</h3>
     
-                            <img class="item-image" src="./img/descarga.png">
+                            <img class="item-image" src="./img/kittysuitcase.webp">
                             <div class="item-details">
                                 <h4 class="item-price">$20</h4>
                                 <button class="item-button btn btn-primary addToCart adding">Add to Cart</button>
@@ -104,7 +103,35 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        <div class="item shadow mb-4">
+                            <h3 class="item-title">Kitty Watch</h3>
+                            <img class="item-image" src="./img/kittywatch.jpg">
+
+                            <div class="item-details">
+                                <h4 class="item-price">$7</h4>
+                                <button class="item-button btn btn-primary addToCart adding">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="item shadow mb-4">
+                            <h3 class="item-title">Kitty Umbrella</h3>
+    
+                            <img class="item-image" src="./img/kittyumbrella.jpg">
+    
+                            <div class="item-details">
+                                <h4 class="item-price">$8</h4>
+                                <button class="item-button btn btn-primary addToCart adding">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+        </div>
+        <div class="row" id="divProducts">
+            
         </div>
     </section>
     <!-- END SECTION STORE -->
@@ -139,7 +166,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="shopping-cart-total d-flex align-items-center">
-                        <p class="mb-0">Total</p>
+                        <p class="mb-0">Total:</p>
                         <p class="ml-4 mb-0 shoppingCartTotal">$0</p>
                         <div class="toast ml-auto bg-info" role="alert" aria-live="assertive" aria-atomic="true"
                             data-delay="2000">
@@ -154,13 +181,35 @@
                                 Successfully added
                             </div>
                         </div>
-                        <button class="btn btn-success ml-auto comprarButton" type="button" data-toggle="modal"
+                        <button class="btn btn-primary ml-auto comprarButton" type="button" data-toggle="modal"
                             data-target="#comprarModal">Buy</button>
                     </div>
                 </div>
             </div>
 
             <!-- END TOTAL -->
+
+            <!-- START MODAL COMPRA -->
+            <div class="modal fade" id="comprarModal" tabindex="-1" aria-labelledby="comprarModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="comprarModalLabel">Thanks for your purchase!</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>You will receive your package in a few days.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                    <!-- END MODAL COMPRA -->
 
         </div>
 
@@ -191,6 +240,11 @@
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
+</div>
+
+<div class="footer">
+    <h4>All Copyright reserved</h4>
+    <h5>Don't forget to visit us again!</h5>
 </div>
 
     <!-- SCRIPTS -->
